@@ -50,6 +50,7 @@
         <cfargument name="dsn" type="string" required="true">
         <cfargument name="table" type="string" required="true">
 
+        <!--- Get DSN/TABLE settings --->
         <cfloop from="1" to="#arraylen(this.dsnList.data)#" index="d">
             <cfset local.item = this.dsnList.data[d]>
             <cfif local.item.dsn eq arguments.dsn>
@@ -62,6 +63,7 @@
         <!--- Do Export Process --->
         <cfif isdefined("local.source")>
             <cftry>
+                <!--- Get all data, ordered by PK --->
                 <cfquery name="local.qry" datasource="#arguments.dsn#">
                     select #local.source.pk#,#local.source.fields# 
                     from #arguments.table#
@@ -69,9 +71,18 @@
                 </cfquery>
                 <cfset local.allFields = "#local.source.pk#,#local.source.fields#">
                 <cfset local.myfile = getDirectoryFromPath(getCurrentTemplatePath()) & "exports/" & arguments.table & "_" & datetimeformat(now(),'yyyymmddHHnn') & ".csv">
+
+                <!--- Create if Exports does not exist --->
+                <cfif not(directoryExists("exports"))>
+                    <cfdirectory action="create" directory="#expandPath('exports')#">
+                </cfif>
+
+                <!--- Execute ---> 
                 <cfset local.mySettings = normalSettings(local.allFields)>
                 <cfset CSVWRITE(local.qry, "query", local.myfile, local.mySettings)>
                 <cfreturn {"success" : true, "file" : myfile}>
+
+                <!--- Manage Errors --->
                 <cfcatch>
                     <cfreturn {"success" : false, "file" : myfile, "error" : cfcatch.message}>
                 </cfcatch>

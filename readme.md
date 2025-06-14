@@ -5,10 +5,11 @@
 **** CODED BY: JUAN CARLOS CARDOSO (jccriv@gmail.com) ***
 *********************************************************
 
-FUNCTIONALITY VIDEO:
+QUICKLINK:
+------------------
 
-    https://youtu.be/5TRsxF_aiRo
-
+  TUTORIAL: https://youtu.be/5TRsxF_aiRo
+       GIT: https://github.com/jc-cardosoriveroll/cfhack25 
 
 INTRODUCTION
 ------------
